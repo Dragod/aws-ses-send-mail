@@ -1,0 +1,32 @@
+{
+    "smtp":
+    {
+        "server": "smtp_server_here",
+        "port": 587,
+        "user": "user_here",
+        "password": "password_here"
+    },
+    "headers":
+    {
+        "ses": "config_set_here"
+    },
+    "email":
+    {
+        "from": "yourEmail.com",
+        "to": "myFriend@gmail.com,myOtherFriend@hisDomain.net",
+        "subject": "Amazon SES test (SMTP interface accessed using Powershell)",
+        "body": "<h1>Amazon SES Test</h1> <p>This email was sent through the <a href='https://aws.amazon.com/ses'>Amazon SES</a> SMTP interface using the .NET System.Net.Mail library.</p>",
+        "isHtml": true,
+        "attachments": [
+            {
+                "path": "test.txt",
+                "mimeType": "plain/text"
+            },
+            {
+                "path": "test.pdf",
+                "mimeType": "application/pdf"
+            }
+        ]
+
+    }
+}

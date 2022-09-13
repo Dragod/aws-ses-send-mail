@@ -1,29 +1,40 @@
-(Join-Path $PSScriptRoot 'config.ps1')
+$config = Get-Content -Path "$PSScriptRoot\config.json" | ConvertFrom-Json
 
 # Set up the mail message
 
 $email = New-Object System.Net.Mail.MailMessage
 
-$email.Headers.Add("X-SES-CONFIGURATION-SET", $env:configSet)
+Write-Host "`nServer: $($config.smtp.server)" -ForegroundColor Magenta
 
-$email.From = $env:from
+$email.Headers.Add("X-SES-CONFIGURATION-SET", $config.headers.ses)
 
-$to = @($env:to).split(",").trim()
+Write-Host("`nEmail from: " + $config.email.from) -ForegroundColor Magenta
+
+$email.From = $config.email.from
+
+$to = @($config.email.to).split(",").trim()
+
+Write-Host("`nEmail to: " + $config.email.to) -ForegroundColor Magenta
 
 foreach ($addr in $to)
 {
     $email.To.Add($addr)
 }
 
-$email.Subject = $env:subject
+$email.Subject = $config.email.subject
 
-$email.IsBodyHtml = $env:isHtml
+Write-Host("`nSubject: " + $config.email.subject) -ForegroundColor Magenta
 
-$email.Body =  $env:body
+$email.IsBodyHtml = $config.email.isHtml
 
-$attachments = @($env:attachments)
+$email.Body =  $config.email.body
 
-foreach ($attachment in $attachments)
-{
+foreach ($attachment in $config.email.attachments) {
+
+    Write-Host "`nAttachment:" $attachment.path -ForegroundColor Magenta
+
+    $attachment = New-Object System.Net.Mail.Attachment("$PSScriptRoot\$($attachment.path)", $attachment.mimeType)
+
     $email.Attachments.Add($attachment)
+
 }

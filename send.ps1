@@ -1,27 +1,27 @@
-. (Join-Path $PSScriptRoot 'config.ps1')
-
 . (Join-Path $PSScriptRoot 'mail.ps1')
 
-$smtpClient = New-Object System.Net.Mail.SmtpClient($env:smtpServer , $env:smtpServerport)
+$config = Get-Content -Path "$PSScriptRoot\config.json" | ConvertFrom-Json
+
+$smtpClient = New-Object System.Net.Mail.SmtpClient($config.smtp.server , $config.smtp.port)
 
 $smtpClient.EnableSsl = $true
 
-$smtpClient.Credentials = New-Object System.Net.NetworkCredential($env:emailSmtpUser , $env:emailSmtpPass)
+$smtpClient.Credentials = New-Object System.Net.NetworkCredential($config.smtp.user , $config.smtp.password)
 
 try {
 
-    Write-Host("Attempting to send email...")
+    Write-Host("`nAttempting to send email...") -ForegroundColor Yellow
 
     $smtpClient.Send($email)
 
-    Write-Host("Email sent!")
+    Write-Host("`nEmail sent!`n") -ForegroundColor Green
 
 }
 catch {
 
-    Write-Host("The email was not sent.")
+    Write-Host("`nThe email was not sent.")
 
-    Write-Host("Error sending email: $_")
+    Write-Host("`nError sending email: $_")
 
 }
 
