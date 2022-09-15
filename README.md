@@ -13,7 +13,7 @@ Requirements:
 - [AWS](https://aws.amazon.com/) account
 - [SES](https://aws.amazon.com/ses/)
 
-Fill in the fields in ```config.ps1``` then open a Powershell CLI on the project root
+Fill in the fields in ```config.json``` then open a Powershell CLI on the project root
 ```PowerShell
 .\send.ps1
 ```
